@@ -1,0 +1,7 @@
+{
+    "version": 2,
+    "name": "Reading Groups",
+    "builds": [
+        { "src": "*.py", "use": "@now/python" }
+    ]
+}
