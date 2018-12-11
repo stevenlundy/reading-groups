@@ -1,11 +1,16 @@
-from http.server import BaseHTTPRequestHandler
+from flask import Flask, send_from_directory
+from werkzeug.contrib.fixers import ProxyFix
 
-class handler(BaseHTTPRequestHandler):
+app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'text/plain')
-        self.end_headers()
-        self.wfile.write(str("Hello from Python on Now 2.0!").encode())
-        return
+@app.route('/')
+def root():
+    return send_from_directory('', 'index.html')
 
+@app.route('/js/<path:path>')
+def send_js(path):
+    return send_from_directory('js', path)
+
+if __name__ == '__main__':
+    app.run(debug=True)
